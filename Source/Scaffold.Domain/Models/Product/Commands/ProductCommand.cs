@@ -6,11 +6,12 @@ namespace Scaffold.Domain.Models.Product.Commands
 {
     public abstract class ProductCommand : Command<Guid, Product, Product>
     {
-        public string SKU { get; }
-        public string Name { get; }
-        public string ShortDescription { get; }
-        public string LongDescription { get; }
-        public string ImageURL { get; }
+        public string sku { get; }
+        public string name { get; }
+        public string shortDescription { get; }
+        public string longDescription { get; }
+        public string imageUrl { get; }
+        public ProductPrice price { get; set; }
 
         protected readonly ProductValidator Validator;
 
@@ -21,13 +22,14 @@ namespace Scaffold.Domain.Models.Product.Commands
         }
 
         protected ProductCommand(Product product)
-            : this(product.Id)
+            : this(Guid.NewGuid())
         {
-            SKU = product.SKU;
-            Name = product.Name;
-            ShortDescription = product.ShortDescription;
-            LongDescription = product.LongDescription;
-            ImageURL = product.ImageURL;
+            sku = product.sku;
+            name = product.name;
+            shortDescription = product.shortDescription;
+            longDescription = product.longDescription;
+            imageUrl = product.imageUrl;
+            price = product.price;
         }
     }
 }

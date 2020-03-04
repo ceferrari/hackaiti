@@ -1,5 +1,6 @@
 using FluentValidation;
 using Scaffold.Domain.Core.Commands;
+using Scaffold.Shared.ContractResolvers;
 
 namespace Scaffold.Domain.Core.Validators
 {
@@ -13,7 +14,7 @@ namespace Scaffold.Domain.Core.Validators
 
         public void ValidateId()
         {
-            RuleFor(c => c.Id).NotEmpty();
+            RuleFor(c => c.id).NotEmpty();
         }
     }
 }

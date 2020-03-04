@@ -4,7 +4,7 @@ namespace Scaffold.Domain.Core.Commands
 {
     public interface ICommand
     {
-        object Id { get; set; }
+        object id { get; set; }
         ValidationResult ValidationResult { get; set; }
         bool IsValid();
     }

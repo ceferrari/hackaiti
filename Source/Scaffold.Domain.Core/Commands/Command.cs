@@ -9,7 +9,7 @@ namespace Scaffold.Domain.Core.Commands
     public abstract class Command<TIdentity, TEntity, TResult> : ICommand<TResult>
         where TEntity : IEntity
     {
-        object ICommand.Id
+        object ICommand.id
         {
             get => Id;
             set => Id = (TIdentity)value;

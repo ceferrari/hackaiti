@@ -14,7 +14,7 @@ namespace Scaffold.Application.Results
 
         public HttpStatusCode Code { get; set; }
         public string Status { get; set; }
-        public string Data { get; set; }
+        public object Data { get; set; }
         public ResultError Error { get; set; }
 
         public async Task ExecuteResultAsync(ActionContext context)
@@ -52,7 +52,7 @@ namespace Scaffold.Application.Results
         {
             Code = code;
             Status = Success;
-            Data = JsonConvert.SerializeObject(data);
+            Data = data;
         }
     }
 

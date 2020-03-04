@@ -12,6 +12,10 @@
         {
             Validator.ValidateSku();
             Validator.ValidateName();
+            Validator.ValidateShortDescription();
+            Validator.ValidateLongDescription();
+            Validator.ValidateImageUrl();
+            Validator.ValidatePrice();
 
             return Validate(Validator, this);
         }

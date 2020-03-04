@@ -18,26 +18,31 @@ namespace Scaffold.Domain.Models.Product.Commands
             if (!command.IsValid())
             {
                 NotifyValidationErrors(command);
-                return new FailureOperationResult<Product>("Error creating product");
+                return new FailureOperationResult<Product>("error creating product");
             }
 
             var entity = new Product(command.Id)
             {
-                SKU = command.SKU,
-                Name = command.Name,
-                ShortDescription = command.ShortDescription,
-                LongDescription = command.LongDescription,
-                ImageURL = command.ImageURL
+                sku = command.sku,
+                name = command.name,
+                shortDescription = command.shortDescription,
+                longDescription = command.longDescription,
+                imageUrl = command.imageUrl
             };
+
+            if (ProductRepository.Products.Exists(x => x.sku == command.sku))
+            {
+                return new FailureOperationResult<Product>("product with specified sku already exists");
+            }
 
             ProductRepository.Products.Add(entity);
 
             //if (Commit())
             //{
-            //    return new FailureOperationResult<Product>("Error creating product");
+            //    return new FailureOperationResult<Product>("error creating product");
             //}
 
-            return new SuccessOperationResult<Product>("Product created", entity);
+            return new SuccessOperationResult<Product>("product created", entity);
         }
     }
 }
