@@ -5,8 +5,8 @@ namespace Scaffold.Domain.Models.Product
 {
     public class ProductPrice : ValueObject
     {
-        public long amount { get; set; }
-        public long scale { get; set; }
+        public long? amount { get; set; }
+        public long? scale { get; set; }
         public string currencyCode { get; set; }
 
         protected override IEnumerable<object> GetEqualityComponents()

@@ -14,6 +14,8 @@ using Scaffold.Domain.Models.Product.Commands;
 using Scaffold.Infra.Repositories;
 using Scaffold.Domain.Models.Product.Queries;
 using System.Collections.Generic;
+using Scaffold.Domain.Models.Cart.Commands;
+using Scaffold.Domain.Models.Cart;
 
 namespace Scaffold.Presentation.Api
 {
@@ -35,14 +37,18 @@ namespace Scaffold.Presentation.Api
                 return new AmazonDynamoDBClient();
             });
 
-            services.AddScoped<IProductRepository, ProductRepository>();
-
             services.AddScoped<IBus, Bus>();
             services.AddScoped<INotificationHandler, NotificationHandler>();
 
+            services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IProductService, ProductService>();
             services.AddTransient<ICommandHandler<ProductCreateCommand, Product>, ProductCreateCommandHandler>();
             services.AddTransient<IQueryHandler<ProductGetQuery, List<Product>>, ProductGetQueryHandler>();
+
+            services.AddScoped<ICartRepository, CartRepository>();
+            services.AddScoped<ICartService, CartService>();
+            services.AddTransient<ICommandHandler<CartCreateCommand, Cart>, CartCreateCommandHandler>();
+            services.AddTransient<ICommandHandler<CartDeleteCommand, Cart>, CartDeleteCommandHandler>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

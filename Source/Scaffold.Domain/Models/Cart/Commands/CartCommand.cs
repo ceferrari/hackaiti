@@ -9,7 +9,9 @@ namespace Scaffold.Domain.Models.Cart.Commands
     public abstract class CartCommand : Command<Guid, Cart, Cart>
     {
         public string customerId { get; set; }
-        public CartCommandItem item { get; set; }
+        public string status { get; set; }
+        public CartCreateItem item { get; set; }
+        public List<CartItem> items { get; set; }
 
         protected readonly CartValidator Validator;
 
@@ -19,11 +21,13 @@ namespace Scaffold.Domain.Models.Cart.Commands
             Validator = new CartValidator();
         }
 
-        protected CartCommand(CartCommand cart)
+        protected CartCommand(Cart cart)
             : this(Guid.NewGuid())
         {
             customerId = cart.customerId;
+            status = cart.status;
             item = cart.item;
+            items = cart.items;
         }
     }
 }

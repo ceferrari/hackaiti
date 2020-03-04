@@ -1,8 +1,4 @@
-﻿using Scaffold.Domain.Core.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Linq.Expressions;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Scaffold.Domain.Models.Product

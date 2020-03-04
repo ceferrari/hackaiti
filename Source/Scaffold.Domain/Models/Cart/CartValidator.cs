@@ -1,10 +1,8 @@
 ﻿using FluentValidation;
 using Scaffold.Domain.Core.Validators;
 using Scaffold.Domain.Models.Cart.Commands;
-using Scaffold.Domain.Models.Product.Commands;
-using System.Collections.Generic;
 
-namespace Scaffold.Domain.Models.Product
+namespace Scaffold.Domain.Models.Cart
 {
     public sealed class CartValidator : Validator<CartCommand>
     {

@@ -1,5 +1,8 @@
+using System;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
+using Scaffold.Application.AppServices;
+using Scaffold.Domain.Models.Cart;
 using Scaffold.Domain.Models.Cart.Commands;
 
 namespace Scaffold.Presentation.Api.Controllers
@@ -9,56 +12,55 @@ namespace Scaffold.Presentation.Api.Controllers
     [Route("[controller]")]
     public class CartsController : ControllerBase
     {
-        [HttpPost]
-        public CreateCartCommandResponse CartPost([FromBody]CreateCartCommand createCommand)
+        private readonly ICartService _cartService;
+
+        public CartsController(ICartService cartService)
         {
-            return new CreateCartCommandResponse();
+            _cartService = cartService;
         }
 
-        [HttpDelete]
-        [Route("{id}")]
-        public IActionResult CartDelete(string id)
+        [HttpPost("")]
+        public IActionResult CartPost([FromBody]Cart cart)
         {
-            if (string.IsNullOrWhiteSpace(id)) return BadRequest();
-
-            var deleteCommand = new DeleteCommand()
-            {
-                CartId = id
-            };
-
-            return Ok();
+            return _cartService.Create(cart);
         }
 
-        [HttpPatch]
-        [Route("{id}/items")]
-        public IActionResult CartPatch([FromRoute]string id, [FromBody]ChangeCartItemCommand patchCommand)
+        [HttpDelete("{id}")]
+        public IActionResult CartDelete(Guid id)
         {
-            if (string.IsNullOrWhiteSpace(id)) return BadRequest();
-
-            if (patchCommand == null) return BadRequest();
-
-            patchCommand.CartId = id;
-
-            return Ok(new CreateCartCommandResponse());
+            return _cartService.Delete(id);
         }
 
-        [HttpPost]
-        [Route("{id}/checkout")]
-        public IActionResult CheckoutPost([FromRoute]string id, [FromBody]CheckoutCommand checkoutCommand)
-        {
-            var teamControlId = Request.Headers["x-team-control"].FirstOrDefault();            
+        //[HttpPatch]
+        //[Route("{id}/items")]
+        //public IActionResult CartPatch([FromRoute]string id, [FromBody]ChangeCartItemCommand patchCommand)
+        //{
+        //    if (string.IsNullOrWhiteSpace(id)) return BadRequest();
 
-            if (string.IsNullOrWhiteSpace(teamControlId)) return BadRequest();
+        //    if (patchCommand == null) return BadRequest();
 
-            if (string.IsNullOrWhiteSpace(id)) return BadRequest();
+        //    patchCommand.CartId = id;
 
-            if (checkoutCommand == null) return BadRequest();
+        //    return Ok(new CreateCartCommandResponse());
+        //}
 
-            checkoutCommand.CartId = id;
-            checkoutCommand.TeamControlId = teamControlId;
+        //[HttpPost]
+        //[Route("{id}/checkout")]
+        //public IActionResult CheckoutPost([FromRoute]string id, [FromBody]CheckoutCommand checkoutCommand)
+        //{
+        //    var teamControlId = Request.Headers["x-team-control"].FirstOrDefault();            
 
-            return Ok();
-        }
+        //    if (string.IsNullOrWhiteSpace(teamControlId)) return BadRequest();
+
+        //    if (string.IsNullOrWhiteSpace(id)) return BadRequest();
+
+        //    if (checkoutCommand == null) return BadRequest();
+
+        //    checkoutCommand.CartId = id;
+        //    checkoutCommand.TeamControlId = teamControlId;
+
+        //    return Ok();
+        //}
 
     }
 }

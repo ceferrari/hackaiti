@@ -1,8 +1,10 @@
 using Scaffold.Domain.Core.Bus;
 using Scaffold.Domain.Core.Commands;
 using Scaffold.Domain.Core.Results;
+using Scaffold.Domain.Models.Product;
+using Scaffold.Domain.Models.Product.Commands;
 
-namespace Scaffold.Domain.Models.Product.Commands
+namespace Scaffold.Infra.Repositories
 {
     public sealed class ProductCreateCommandHandler : CommandHandler<ProductCreateCommand, Product>
     {

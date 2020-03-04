@@ -1,9 +1,10 @@
 ﻿using Scaffold.Application.Results;
 using Scaffold.Domain.Core.Bus;
 using Scaffold.Domain.Core.Notifications;
-using Scaffold.Domain.Models.Product;
-using Scaffold.Domain.Models.Product.Commands;
+using Scaffold.Domain.Models.Cart;
+using Scaffold.Domain.Models.Cart.Commands;
 using Scaffold.Domain.Models.Product.Queries;
+using System;
 using System.Net;
 
 namespace Scaffold.Application.AppServices
@@ -28,15 +29,27 @@ namespace Scaffold.Application.AppServices
                 : (Result)new FailureResult(HttpStatusCode.BadRequest, result.Message);
         }
 
-        public Result Create(Product product)
+        public Result Create(Cart cartCreate)
         {
-            var command = new ProductCreateCommand(product);
+            var command = new CartCreateCommand(cartCreate);
             var result = Bus.Submit(command);
 
             if (NotificationHandler.HasNotifications()) return ValidationErrorResult();
 
             return result.Success
                 ? (Result)new SuccessResult(HttpStatusCode.Created, result.Data)
+                : (Result)new FailureResult(HttpStatusCode.BadRequest, result.Message);
+        }
+
+        public Result Delete(Guid id)
+        {
+            var command = new CartDeleteCommand(id);
+            var result = Bus.Submit(command);
+
+            if (NotificationHandler.HasNotifications()) return ValidationErrorResult();
+
+            return result.Success
+                ? (Result)new SuccessResult(HttpStatusCode.NoContent, result.Data)
                 : (Result)new FailureResult(HttpStatusCode.BadRequest, result.Message);
         }
     }
