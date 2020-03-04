@@ -11,7 +11,10 @@ namespace Scaffold.Domain.Models.Product
             RuleFor(x => x.SKU)
                 .NotNull().WithMessage("SKU cannot be null")
                 .NotEmpty().WithMessage("SKU cannot be empty");
+        }
 
+        public void ValidateName()
+        {
             RuleFor(x => x.Name)
                 .NotNull().WithMessage("Name cannot be null")
                 .NotEmpty().WithMessage("Name cannot be empty")

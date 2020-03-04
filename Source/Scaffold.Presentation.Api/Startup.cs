@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Scaffold.Application.AppServices;
 using Scaffold.Domain.Core.Bus;
 using Scaffold.Domain.Core.Notifications;
 
@@ -24,7 +25,7 @@ namespace Scaffold.Presentation.Api
             services.AddScoped<IBus, Bus>();
             services.AddScoped<INotificationHandler, NotificationHandler>();
 
-            services.AddScoped<INotificationHandler, NotificationHandler>();
+            services.AddScoped<IProductService, ProductService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

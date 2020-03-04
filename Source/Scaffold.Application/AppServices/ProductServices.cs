@@ -4,7 +4,7 @@ using Scaffold.Domain.Models.Product.Commands;
 
 namespace Scaffold.Application.AppServices
 {
-    public class ProductService : AbstractService
+    public class ProductService : AbstractService, IProductService
     {
         public ProductService(IBus bus)
             : base(bus)
