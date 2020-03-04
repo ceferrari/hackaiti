@@ -1,6 +1,5 @@
 using Scaffold.Domain.Core.Bus;
 using Scaffold.Domain.Core.Notifications;
-using Scaffold.Domain.Core.Repositories;
 using Scaffold.Domain.Core.Results;
 
 namespace Scaffold.Domain.Core.Commands

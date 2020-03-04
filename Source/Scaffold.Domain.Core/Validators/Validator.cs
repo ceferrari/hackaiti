@@ -1,6 +1,5 @@
 using FluentValidation;
 using Scaffold.Domain.Core.Commands;
-using Scaffold.Shared.ContractResolvers;
 
 namespace Scaffold.Domain.Core.Validators
 {

@@ -5,6 +5,7 @@ namespace Scaffold.Application.AppServices
 {
     public interface IProductService
     {
+        Result Get(object id);
         Result Create(Product product);
     }
 }

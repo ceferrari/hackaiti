@@ -19,6 +19,6 @@ namespace Scaffold.Application.AppServices
         }
 
         public IList<string> GetNotifications() => NotificationHandler.Notifications.Select(x => x.Message).ToList();
-        public Result ValidationErrorResult() => new FailureResult(HttpStatusCode.BadRequest, "validation error(s)", GetNotifications());
+        public Result ValidationErrorResult() => new FailureResult(HttpStatusCode.BadRequest,  GetNotifications());
     }
 }

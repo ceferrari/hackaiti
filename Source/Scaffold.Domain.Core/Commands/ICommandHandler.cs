@@ -1,4 +1,3 @@
-using System;
 using Scaffold.Domain.Core.Results;
 
 namespace Scaffold.Domain.Core.Commands

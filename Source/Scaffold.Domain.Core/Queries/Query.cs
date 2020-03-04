@@ -10,18 +10,13 @@ namespace Scaffold.Domain.Core.Queries
         public string OrderBy { get; set; }
         public int? Skip { get; set; }
         public int? Take { get; set; }
-        public string IncludeProperties { get; set; }
-        public bool AsNoTracking { get; set; }
 
-        protected Query(object id, string includeProperties = null, bool asNoTracking = true)
+        protected Query(object id)
         {
             Id = id;
-            IncludeProperties = includeProperties;
-            AsNoTracking = asNoTracking;
         }
 
-        protected Query(Expression<Func<TEntity, bool>> filter = null, string orderBy = null, int? skip = null, int? take = null, string includeProperties = null, bool asNoTracking = true)
-            : this(null, includeProperties, asNoTracking)
+        protected Query(Expression<Func<TEntity, bool>> filter = null, string orderBy = null, int? skip = null, int? take = null)
         {
             Filter = filter;
             OrderBy = orderBy;

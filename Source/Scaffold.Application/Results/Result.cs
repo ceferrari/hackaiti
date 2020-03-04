@@ -15,35 +15,21 @@ namespace Scaffold.Application.Results
         public HttpStatusCode Code { get; set; }
         public string Status { get; set; }
         public object Data { get; set; }
-        public ResultError Error { get; set; }
 
         public async Task ExecuteResultAsync(ActionContext context)
         {
             context.HttpContext.Response.StatusCode = (int)Code;
             context.HttpContext.Response.ContentType = "application/json";
-            await new ObjectResult(this).ExecuteResultAsync(context);
+            await new ObjectResult(this.Data).ExecuteResultAsync(context);
         }
 
         public bool ShouldSerializeCode() => false;
-        public bool ShouldSerializeData() => Success.Equals(Status);
-        public bool ShouldSerializeError() => Failure.Equals(Status);
+        public bool ShouldSerializeStatus() => false;
 
         public string ToJson() => JsonConvert.SerializeObject(this, new JsonSerializerSettings
         {
             ContractResolver = new LowercaseContractResolver()
         });
-
-        public class ResultError
-        {
-            public ResultError(string message, IList<string> details)
-            {
-                Message = message;
-                Details = details;
-            }
-
-            public string Message { get; set; }
-            public IList<string> Details { get; set; }
-        }
     }
 
     public class SuccessResult : Result
@@ -58,11 +44,18 @@ namespace Scaffold.Application.Results
 
     public class FailureResult : Result
     {
-        public FailureResult(HttpStatusCode code, string errorMessage, IList<string> errorDetails)
+        public FailureResult(HttpStatusCode code, IList<string> data)
         {
             Code = code;
             Status = Failure;
-            Error = new ResultError(errorMessage, errorDetails);
+            Data = data;
+        }
+
+        public FailureResult(HttpStatusCode code, string data)
+        {
+            Code = code;
+            Status = Failure;
+            Data = new List<string>() { data };
         }
     }
 }
