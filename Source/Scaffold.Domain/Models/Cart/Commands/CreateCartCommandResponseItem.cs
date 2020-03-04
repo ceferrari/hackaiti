@@ -5,6 +5,8 @@ namespace Scaffold.Domain.Models.Cart.Commands
         public long Id { get; set; }
         public decimal Price { get; set; }
         public long Scale { get; set; }
+        public long Quantity { get; set; }
         public string CurrencyCode { get; set; }
+        public long TotalPrice { get; set; }
     }
 }
