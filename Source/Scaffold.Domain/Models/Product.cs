@@ -6,6 +6,7 @@ namespace Scaffold.Domain.Models
 {
     public class Product
     {
+        
         public string SKU { get; set; }
         public string Name { get; set; }
         public string ShortDescription { get; set; }
