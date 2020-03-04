@@ -1,9 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Scaffold.Domain.Models;
 using Scaffold.Domain.Models.Cart.Commands;
 
 namespace Scaffold.Presentation.Api.Controllers

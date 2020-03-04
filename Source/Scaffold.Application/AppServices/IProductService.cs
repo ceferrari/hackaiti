@@ -1,12 +1,10 @@
-﻿using Scaffold.Domain.Models.Product;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Scaffold.Application.Results;
+using Scaffold.Domain.Models.Product;
 
 namespace Scaffold.Application.AppServices
 {
     public interface IProductService
     {
-        Product Create(Product product);
+        Result Create(Product product);
     }
 }

@@ -5,6 +5,17 @@ namespace Scaffold.Domain.Models.Product
 {
     public class Product : Entity<Guid>
     {
+        public Product()
+        {
+
+        }
+
+        public Product(Guid id)
+            : base(id)
+        {
+
+        }
+
         public string SKU { get; set; }
         public string Name { get; set; }
         public string ShortDescription { get; set; }

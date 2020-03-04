@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using Scaffold.Application.AppServices;
-using Scaffold.Domain.Core.Bus;
+using Scaffold.Application.Results;
 using Scaffold.Domain.Models.Product;
-using Scaffold.Domain.Models.Product.Commands;
 
 namespace Scaffold.Presentation.Api.Controllers
 {
@@ -26,7 +25,7 @@ namespace Scaffold.Presentation.Api.Controllers
         }
 
         [HttpPost]
-        public Product Post([FromBody]Product product)
+        public IActionResult Post([FromBody]Product product)
         {
             return _productService.Create(product);
         }

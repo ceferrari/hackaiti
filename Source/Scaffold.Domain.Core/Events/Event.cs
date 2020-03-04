@@ -12,6 +12,16 @@ namespace Scaffold.Domain.Core.Events
         public string Message { get; }
         public string Version { get; }
 
+        protected Event(Type type, string message, int version = 1)
+        {
+            Timestamp = DateTime.UtcNow.ToString("O");
+            UniqueId = Guid.NewGuid().ToString();
+            CorrelationId = Guid.NewGuid().ToString();
+            Type = type?.Name;
+            Message = message;
+            Version = version.ToString();
+        }
+
         protected Event(Type type, object message, int version = 1)
         {
             Timestamp = DateTime.UtcNow.ToString("O");
