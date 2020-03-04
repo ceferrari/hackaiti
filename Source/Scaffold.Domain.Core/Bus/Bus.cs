@@ -1,6 +1,5 @@
 using System;
 using Scaffold.Domain.Core.Commands;
-using Scaffold.Domain.Core.Logs;
 using Scaffold.Domain.Core.Notifications;
 using Scaffold.Domain.Core.Queries;
 using Scaffold.Domain.Core.Results;
