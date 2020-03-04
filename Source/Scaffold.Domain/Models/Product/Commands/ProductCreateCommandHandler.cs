@@ -26,7 +26,8 @@ namespace Scaffold.Domain.Models.Product.Commands
                 name = command.name,
                 shortDescription = command.shortDescription,
                 longDescription = command.longDescription,
-                imageUrl = command.imageUrl
+                imageUrl = command.imageUrl,
+                price = command.price
             };
 
             if (ProductRepository.Products.Exists(x => x.sku == command.sku))

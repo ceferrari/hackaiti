@@ -8,7 +8,6 @@ using Scaffold.Domain.Core.Bus;
 using Scaffold.Domain.Core.Commands;
 using Scaffold.Domain.Core.Notifications;
 using Scaffold.Domain.Core.Queries;
-using Scaffold.Domain.Core.Repositories;
 using Scaffold.Domain.Models.Product;
 using Scaffold.Domain.Models.Product.Commands;
 using Scaffold.Domain.Models.Product.Queries;

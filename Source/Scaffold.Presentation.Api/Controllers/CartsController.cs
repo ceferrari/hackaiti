@@ -1,6 +1,5 @@
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Scaffold.Domain.Models.Cart.Commands;
 
 namespace Scaffold.Presentation.Api.Controllers
@@ -10,13 +9,6 @@ namespace Scaffold.Presentation.Api.Controllers
     [Route("[controller]")]
     public class CartsController : ControllerBase
     {
-        private readonly ILogger<CartsController> _logger;
-
-        public CartsController(ILogger<CartsController> logger)
-        {
-            _logger = logger;
-        }
-
         [HttpPost]
         public CreateCartCommandResponse CartPost([FromBody]CreateCartCommand createCommand)
         {

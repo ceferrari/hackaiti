@@ -1,8 +1,6 @@
 ﻿using Scaffold.Domain.Core.Queries;
-using Scaffold.Domain.Core.Repositories;
 using Scaffold.Domain.Core.Results;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Scaffold.Domain.Models.Product.Queries
 {

@@ -8,9 +8,9 @@ using System.Net;
 
 namespace Scaffold.Application.AppServices
 {
-    public class ProductService : AbstractService, IProductService
+    public class CartService : AbstractService, ICartService
     {
-        public ProductService(IBus bus, INotificationHandler notificationHandler)
+        public CartService(IBus bus, INotificationHandler notificationHandler)
             : base(bus, notificationHandler)
         {
 

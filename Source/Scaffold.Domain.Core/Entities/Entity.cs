@@ -7,25 +7,25 @@ namespace Scaffold.Domain.Core.Entities
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public TIdentity Id { get; protected set; }
-        object IEntity.Id
+        public TIdentity id { get; protected set; }
+        object IEntity.id
         {
-            get => Id;
-            set => Id = (TIdentity)value;
+            get => id;
+            set => id = (TIdentity)value;
         }
 
         protected Entity() { }
-        protected Entity(TIdentity id) => Id = id;
+        protected Entity(TIdentity Id) => id = Id;
 
         public override bool Equals(object obj)
         {
             var compareTo = obj as Entity<TIdentity>;
-            return ReferenceEquals(this, compareTo) || compareTo is object && Id.Equals(compareTo.Id);
+            return ReferenceEquals(this, compareTo) || compareTo is object && id.Equals(compareTo.id);
         }
 
         public static bool operator ==(Entity<TIdentity> a, Entity<TIdentity> b) => a?.Equals(b) ?? b is null;
         public static bool operator !=(Entity<TIdentity> a, Entity<TIdentity> b) => !(a == b);
-        public override int GetHashCode() => GetType().GetHashCode() * 907 + Id.GetHashCode();
-        public override string ToString() => $"{GetType().Name} [Id={Id}]";
+        public override int GetHashCode() => GetType().GetHashCode() * 907 + id.GetHashCode();
+        public override string ToString() => $"{GetType().Name} [id={id}]";
     }
 }

@@ -1,4 +1,3 @@
-using Scaffold.Domain.Core.Repositories;
 using Scaffold.Domain.Core.Results;
 
 namespace Scaffold.Domain.Core.Queries
