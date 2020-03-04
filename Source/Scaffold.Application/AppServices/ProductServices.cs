@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Scaffold.Domain.Models
+namespace Scaffold.Application.AppServices
 {
-    public class Product
+    public class ProductServices
     {
     }
 }
