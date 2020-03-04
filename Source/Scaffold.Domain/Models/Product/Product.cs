@@ -1,8 +1,9 @@
 ﻿using Scaffold.Domain.Core.Entities;
+using System;
 
 namespace Scaffold.Domain.Models.Product
 {
-    public class Product : Entity<int>
+    public class Product : Entity<Guid>
     {
         public string SKU { get; set; }
         public string Name { get; set; }

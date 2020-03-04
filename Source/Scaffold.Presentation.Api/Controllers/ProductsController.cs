@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Scaffold.Domain.Core.Bus;
 using Scaffold.Domain.Models.Product;
+using Scaffold.Domain.Models.Product.Commands;
 
 namespace Scaffold.Presentation.Api.Controllers
 {
@@ -26,10 +27,8 @@ namespace Scaffold.Presentation.Api.Controllers
         [HttpPost]
         public Product Post([FromBody]Product product)
         {
-            var command = mapper.Map<ProductreateCommand>(product);
-            return bus.Submit(command).Data;
+            var command = new ProductCreateCommand(product);
+            return _bus.Submit(command).Data;
         }
-
-       
     }
 }

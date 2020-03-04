@@ -1,16 +1,11 @@
-﻿namespace Scaffold.Domain.Models.Product.Commands
+﻿using System;
+
+namespace Scaffold.Domain.Models.Product.Commands
 {
     public sealed class ProductCreateCommand : ProductCommand
     {
-        public ProductCreateCommand(int id)
-            : base(id)
-        {
-
-        }
-
-        public ProductCreateCommand(int id,
-            string sku)
-            : base(id, sku)
+        public ProductCreateCommand(Product product)
+            : base(product)
         {
 
         }

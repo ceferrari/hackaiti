@@ -23,6 +23,8 @@ namespace Scaffold.Presentation.Api
 
             services.AddScoped<IBus, Bus>();
             services.AddScoped<INotificationHandler, NotificationHandler>();
+
+            services.AddScoped<INotificationHandler, NotificationHandler>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

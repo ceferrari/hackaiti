@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 
 namespace Scaffold.Domain.Models.Product.Commands
 {
-    public abstract class ProductCommand : Command<int, Product, Product>
+    public abstract class ProductCommand : Command<Guid, Product, Product>
     {
         public string SKU { get; }
         public string Name { get; }
@@ -14,14 +14,14 @@ namespace Scaffold.Domain.Models.Product.Commands
 
         protected readonly ProductValidator Validator;
 
-        protected ProductCommand(int id, Expression<Func<Product, bool>> filter = null)
+        protected ProductCommand(Guid id, Expression<Func<Product, bool>> filter = null)
             : base(id, filter)
         {
             Validator = new ProductValidator();
         }
 
-        protected ProductCommand(int id, Product product)
-            : this(id)
+        protected ProductCommand(Product product)
+            : this(product.Id)
         {
             SKU = product.SKU;
             Name = product.Name;

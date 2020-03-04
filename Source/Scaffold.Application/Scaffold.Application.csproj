@@ -8,4 +8,8 @@
     <Folder Include="ExternalServices\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Scaffold.Domain\Scaffold.Domain.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -1,13 +1,21 @@
-﻿namespace Scaffold.Application.AppServices
+﻿using Scaffold.Domain.Core.Bus;
+using Scaffold.Domain.Models.Product;
+using Scaffold.Domain.Models.Product.Commands;
+
+namespace Scaffold.Application.AppServices
 {
-    public class ProductServices
+    public class ProductService : AbstractService
     {
-        
-        public string SKU { get; set; }
-        public string Name { get; set; }
-        public string ShortDescription { get; set; }
-        public string LongDescription { get; set; }
-        public string ImageURL { get; set; }
-        public ProductPrice Price { get; set; }
+        public ProductService(IBus bus)
+            : base(bus)
+        {
+
+        }
+
+        public Product Create(Product product)
+        {
+            var command = new ProductCreateCommand(product);
+            return Bus.Submit(command).Data;
+        }
     }
 }
