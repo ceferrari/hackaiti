@@ -8,8 +8,4 @@
     <ProjectReference Include="..\Scaffold.Domain.Core\Scaffold.Domain.Core.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Models\Product\Queries\" />
-  </ItemGroup>
-
 </Project>

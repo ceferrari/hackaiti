@@ -1,6 +1,5 @@
 using Scaffold.Domain.Core.Bus;
 using Scaffold.Domain.Core.Commands;
-using Scaffold.Domain.Core.Repositories;
 using Scaffold.Domain.Core.Results;
 
 namespace Scaffold.Domain.Models.Product.Commands

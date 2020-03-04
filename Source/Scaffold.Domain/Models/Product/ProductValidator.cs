@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using Scaffold.Domain.Core.Validators;
 using Scaffold.Domain.Models.Product.Commands;
+using System.Collections.Generic;
 
 namespace Scaffold.Domain.Models.Product
 {
@@ -55,9 +56,9 @@ namespace Scaffold.Domain.Models.Product
                 .NotNull()
                 .NotEmpty();
 
+            var acceptedCurrencies = new List<string> { "USD", "EUR", "BRL" };
             RuleFor(x => x.price.currencyCode)
-                .NotNull()
-                .NotEmpty();
+                .Must(x => acceptedCurrencies.Contains(x)).WithMessage("'price.currencyCode' must be one of ['" + string.Join("', '", acceptedCurrencies) + "']");
         }
     }
 }

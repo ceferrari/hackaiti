@@ -1,10 +1,12 @@
-﻿using System;
+﻿using Scaffold.Domain.Core.Repositories;
+using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace Scaffold.Domain.Models.Product
 {
-    public static class ProductRepository
+    public class ProductRepository
     {
         public static List<Product> Products = new List<Product>();
     }

@@ -7,8 +7,12 @@ using Scaffold.Application.AppServices;
 using Scaffold.Domain.Core.Bus;
 using Scaffold.Domain.Core.Commands;
 using Scaffold.Domain.Core.Notifications;
+using Scaffold.Domain.Core.Queries;
+using Scaffold.Domain.Core.Repositories;
 using Scaffold.Domain.Models.Product;
 using Scaffold.Domain.Models.Product.Commands;
+using Scaffold.Domain.Models.Product.Queries;
+using System.Collections.Generic;
 
 namespace Scaffold.Presentation.Api
 {
@@ -30,6 +34,7 @@ namespace Scaffold.Presentation.Api
 
             services.AddScoped<IProductService, ProductService>();
             services.AddTransient<ICommandHandler<ProductCreateCommand, Product>, ProductCreateCommandHandler>();
+            services.AddTransient<IQueryHandler<ProductGetQuery, List<Product>>, ProductGetQueryHandler>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
