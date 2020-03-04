@@ -6,6 +6,7 @@ namespace Scaffold.Application.AppServices
 {
     public class ProductServices
     {
+        
         public string SKU { get; set; }
         public string Name { get; set; }
         public string ShortDescription { get; set; }
