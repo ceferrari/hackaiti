@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
+using Scaffold.Application.AppServices;
 using Scaffold.Domain.Core.Bus;
 using Scaffold.Domain.Models.Product;
 using Scaffold.Domain.Models.Product.Commands;
@@ -11,11 +12,11 @@ namespace Scaffold.Presentation.Api.Controllers
     [Route("[controller]")] 
     public class ProductsController : ControllerBase
     {
-        private readonly IBus _bus;
+        private readonly IProductService _productService;
 
-        public ProductsController(IBus bus)
+        public ProductsController(IProductService productService)
         {
-            _bus = bus;
+            _productService = productService;
         }
 
         [HttpGet]
@@ -27,8 +28,7 @@ namespace Scaffold.Presentation.Api.Controllers
         [HttpPost]
         public Product Post([FromBody]Product product)
         {
-            var command = new ProductCreateCommand(product);
-            return _bus.Submit(command).Data;
+            return _productService.Create(product);
         }
     }
 }

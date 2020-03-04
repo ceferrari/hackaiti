@@ -13,6 +13,7 @@ namespace Scaffold.Domain.Models.Product.Commands
         public override bool IsValid()
         {
             Validator.ValidateSku();
+            Validator.ValidateName();
 
             return Validate(Validator, this);
         }
