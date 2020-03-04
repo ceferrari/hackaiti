@@ -10,7 +10,7 @@ namespace Scaffold.Presentation.Api.Controllers
 {
     [ApiController]
     [Produces("application/json")]
-    [Route("[controller]")] 
+    [Route("[controller]")]
     public class CartsController : ControllerBase
     {
         private readonly ILogger<CartsController> _logger;
@@ -19,25 +19,52 @@ namespace Scaffold.Presentation.Api.Controllers
         {
             _logger = logger;
         }
-        
+
         [HttpPost]
-        public CreateCartCommandResponse Post([FromBody]CreateCartCommand createCommand)
+        public CreateCartCommandResponse CartPost([FromBody]CreateCartCommand createCommand)
         {
             return new CreateCartCommandResponse();
         }
 
         [HttpDelete]
         [Route("{id}")]
-        public IActionResult Delete(string id)
+        public IActionResult CartDelete(string id)
         {
+            if (string.IsNullOrWhiteSpace(id)) return BadRequest();
+
+            var deleteCommand = new DeleteCommand()
+            {
+                CartId = id
+            };
+
             return Ok();
         }
 
         [HttpPatch]
         [Route("{id}/items")]
-        public CreateCartCommandResponse Patch([FromRoute]string id, [FromBody]ChangeCartItemCommand createCommand)
+        public IActionResult CartPatch([FromRoute]string id, [FromBody]ChangeCartItemCommand patchCommand)
         {
-            return new CreateCartCommandResponse();
+            if (string.IsNullOrWhiteSpace(id)) return BadRequest();
+
+            if (patchCommand == null) return BadRequest();
+
+            patchCommand.CartId = id;
+
+            return Ok(new CreateCartCommandResponse());
         }
+
+        [HttpPost]
+        [Route("{id}/checkout")]
+        public IActionResult CheckoutPost([FromRoute]string id, [FromBody]CheckoutCommand checkoutCommand)
+        {
+            if (string.IsNullOrWhiteSpace(id)) return BadRequest();
+
+            if (checkoutCommand == null) return BadRequest();
+
+            checkoutCommand.CartId = id;
+
+            return Ok();
+        }
+
     }
 }
