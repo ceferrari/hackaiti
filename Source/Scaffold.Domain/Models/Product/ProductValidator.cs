@@ -1,7 +1,5 @@
 ﻿using Scaffold.Domain.Core.Validators;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using Scaffold.Domain.Models.Product.Commands;
 
 namespace Scaffold.Domain.Models.Product
 {
@@ -9,7 +7,7 @@ namespace Scaffold.Domain.Models.Product
     {
         public void ValidateSku()
         {
-            RuleFor(x => x.Nome).Length(10, 20);
+            RuleFor(x => x.SKU)
         }
     }
 }

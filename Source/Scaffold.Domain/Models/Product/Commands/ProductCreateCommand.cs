@@ -1,24 +1,25 @@
-﻿using Scaffold.Domain.Core.Commands;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Scaffold.Domain.Models.Product.Commands
+﻿namespace Scaffold.Domain.Models.Product.Commands
 {
-    public abstract class ProductCreateCommand : Command<int, Product, Product>
+    public sealed class ProductCreateCommand : ProductCommand
     {
-        protected readonly ProductValidator Validator;
-
-        protected PrczCategoriaCommand(string id, Expression<Func<PrczCategoria, bool>> filter = null)
-            : base(id, filter)
+        public ProductCreateCommand(int id)
+            : base(id)
         {
-            Validator = new PrczCategoriaValidator();
+
         }
 
-        protected PrczCategoriaCommand(string id, string nome)
-            : this(id)
+        public ProductCreateCommand(int id,
+            string sku)
+            : base(id, sku)
         {
-            Nome = nome;
+
+        }
+
+        public override bool IsValid()
+        {
+            Validator.ValidateSku();
+
+            return Validate(Validator, this);
         }
     }
 }

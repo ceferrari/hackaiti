@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Scaffold.Shared.ContextAcessors
+﻿namespace Scaffold.Shared.ContextAcessors
 {
     public interface ICorrelationIdContextAcessor
     {

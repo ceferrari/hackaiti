@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using Scaffold.Domain.Models;
+using Scaffold.Domain.Core.Bus;
+using Scaffold.Domain.Models.Product;
 
 namespace Scaffold.Presentation.Api.Controllers
 {
@@ -12,11 +10,11 @@ namespace Scaffold.Presentation.Api.Controllers
     [Route("[controller]")] 
     public class ProductsController : ControllerBase
     {
-        private readonly ILogger<ProductsController> _logger;
+        private readonly IBus _bus;
 
-        public ProductsController(ILogger<ProductsController> logger)
+        public ProductsController(IBus bus)
         {
-            _logger = logger;
+            _bus = bus;
         }
 
         [HttpGet]
@@ -28,7 +26,8 @@ namespace Scaffold.Presentation.Api.Controllers
         [HttpPost]
         public Product Post([FromBody]Product product)
         {
-            return product;
+            var command = mapper.Map<ProductreateCommand>(product);
+            return bus.Submit(command).Data;
         }
 
        
