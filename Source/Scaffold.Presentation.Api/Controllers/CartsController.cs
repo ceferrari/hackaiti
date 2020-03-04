@@ -28,13 +28,14 @@ namespace Scaffold.Presentation.Api.Controllers
 
         [HttpDelete]
         [Route("{id}")]
-        public IActionResult Delete()
+        public IActionResult Delete(string id)
         {
             return Ok();
         }
 
         [HttpPatch]
-        public CreateCartCommandResponse Patch([FromBody]ChangeCartItemCommand createCommand)
+        [Route("{id}/items")]
+        public CreateCartCommandResponse Patch([FromRoute]string id, [FromBody]ChangeCartItemCommand createCommand)
         {
             return new CreateCartCommandResponse();
         }
