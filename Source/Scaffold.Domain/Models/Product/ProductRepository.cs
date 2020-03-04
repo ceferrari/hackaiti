@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Scaffold.Domain.Models.Product
 {
-    public static class ProductRepository
+    public interface IProductRepository
     {
-        public static List<Product> Products = new List<Product>();
+        Task AddProduct(Product product);
+        bool AlreadyExists(string sku);
+        Task<Product> GetProduct(string sku);
+        Task<IEnumerable<Product>> GetAllProducts();
     }
 }

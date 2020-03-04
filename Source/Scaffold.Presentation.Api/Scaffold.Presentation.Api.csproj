@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AWSSDK.DynamoDBv2" Version="3.3.105.6" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.2" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.9.10" />
   </ItemGroup>
@@ -15,6 +16,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Scaffold.Application\Scaffold.Application.csproj" />
     <ProjectReference Include="..\Scaffold.Domain\Scaffold.Domain.csproj" />
+    <ProjectReference Include="..\Scaffold.Infra\Scaffold.Infra.csproj" />
   </ItemGroup>
 
 </Project>

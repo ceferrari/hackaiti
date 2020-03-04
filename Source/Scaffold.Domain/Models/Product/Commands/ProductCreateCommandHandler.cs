@@ -7,10 +7,12 @@ namespace Scaffold.Domain.Models.Product.Commands
 {
     public sealed class ProductCreateCommandHandler : CommandHandler<ProductCreateCommand, Product>
     {
-        public ProductCreateCommandHandler(IBus bus)
+        private readonly IProductRepository _productRepository;
+
+        public ProductCreateCommandHandler(IBus bus, IProductRepository productRepository)
             : base(bus)
         {
-
+            _productRepository = productRepository;
         }
 
         public override AbstractOperationResult<Product> Handle(ProductCreateCommand command)
@@ -27,15 +29,20 @@ namespace Scaffold.Domain.Models.Product.Commands
                 name = command.name,
                 shortDescription = command.shortDescription,
                 longDescription = command.longDescription,
-                imageUrl = command.imageUrl
+                imageUrl = command.imageUrl,
+                price = command.price
             };
 
-            if (ProductRepository.Products.Exists(x => x.sku == command.sku))
+            if (_productRepository.AlreadyExists(command.sku))
             {
                 return new FailureOperationResult<Product>("product with specified sku already exists");
             }
 
-            ProductRepository.Products.Add(entity);
+            _productRepository.AddProduct(entity).Wait();
+
+            var py = _productRepository.GetAllProducts().Result;
+
+            var px = _productRepository.GetProduct(entity.sku).Result;
 
             //if (Commit())
             //{
