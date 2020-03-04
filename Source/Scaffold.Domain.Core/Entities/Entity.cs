@@ -7,7 +7,7 @@ namespace Scaffold.Domain.Core.Entities
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public TIdentity id { get; protected set; }
+        public TIdentity id { get; set; }
         object IEntity.id
         {
             get => id;

@@ -1,3 +1,4 @@
+using Amazon.DynamoDBv2;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -10,6 +11,7 @@ using Scaffold.Domain.Core.Notifications;
 using Scaffold.Domain.Core.Queries;
 using Scaffold.Domain.Models.Product;
 using Scaffold.Domain.Models.Product.Commands;
+using Scaffold.Infra.Repositories;
 using Scaffold.Domain.Models.Product.Queries;
 using System.Collections.Generic;
 
@@ -27,6 +29,13 @@ namespace Scaffold.Presentation.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers().AddNewtonsoftJson();
+
+            services.AddSingleton<AmazonDynamoDBClient>(serviceConfiguration =>
+            {
+                return new AmazonDynamoDBClient();
+            });
+
+            services.AddScoped<IProductRepository, ProductRepository>();
 
             services.AddScoped<IBus, Bus>();
             services.AddScoped<INotificationHandler, NotificationHandler>();
