@@ -57,11 +57,16 @@ namespace Scaffold.Presentation.Api.Controllers
         [Route("{id}/checkout")]
         public IActionResult CheckoutPost([FromRoute]string id, [FromBody]CheckoutCommand checkoutCommand)
         {
+            var teamControlId = Request.Headers["x-team-control"].FirstOrDefault();            
+
+            if (string.IsNullOrWhiteSpace(teamControlId)) return BadRequest();
+
             if (string.IsNullOrWhiteSpace(id)) return BadRequest();
 
             if (checkoutCommand == null) return BadRequest();
 
             checkoutCommand.CartId = id;
+            checkoutCommand.TeamControlId = teamControlId;
 
             return Ok();
         }
