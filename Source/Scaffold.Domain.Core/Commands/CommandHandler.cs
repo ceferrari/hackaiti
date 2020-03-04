@@ -9,12 +9,10 @@ namespace Scaffold.Domain.Core.Commands
         where TCommand : ICommand
     {
         protected readonly IBus Bus;
-        protected readonly IRepository Repository;
 
-        protected CommandHandler(IBus bus, IRepository repository)
+        protected CommandHandler(IBus bus)
         {
             Bus = bus;
-            Repository = repository;
         }
 
         public abstract AbstractOperationResult<TResult> Handle(TCommand command);
@@ -25,16 +23,6 @@ namespace Scaffold.Domain.Core.Commands
             {
                 Bus.Notify(new Notification(command.GetType(), error.ErrorMessage));
             }
-        }
-
-        public bool Commit()
-        {
-            return Repository.Save() > 0;
-        }
-
-        public void Dispose()
-        {
-            Repository.Dispose();
         }
     }
 }

@@ -9,7 +9,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Abstractions" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Scaffold.Domain\Scaffold.Domain.csproj" />
+    <ProjectReference Include="..\Scaffold.Shared\Scaffold.Shared.csproj" />
   </ItemGroup>
 
 </Project>

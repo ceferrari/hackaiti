@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Scaffold.Domain.Models.Product.Commands
+﻿namespace Scaffold.Domain.Models.Product.Commands
 {
     public sealed class ProductCreateCommand : ProductCommand
     {

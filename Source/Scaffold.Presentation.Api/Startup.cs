@@ -5,7 +5,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Scaffold.Application.AppServices;
 using Scaffold.Domain.Core.Bus;
+using Scaffold.Domain.Core.Commands;
 using Scaffold.Domain.Core.Notifications;
+using Scaffold.Domain.Models.Product;
+using Scaffold.Domain.Models.Product.Commands;
 
 namespace Scaffold.Presentation.Api
 {
@@ -20,12 +23,13 @@ namespace Scaffold.Presentation.Api
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson();
 
             services.AddScoped<IBus, Bus>();
             services.AddScoped<INotificationHandler, NotificationHandler>();
 
             services.AddScoped<IProductService, ProductService>();
+            services.AddTransient<ICommandHandler<ProductCreateCommand, Product>, ProductCreateCommandHandler>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
