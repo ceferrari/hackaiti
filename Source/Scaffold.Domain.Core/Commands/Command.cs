@@ -11,15 +11,15 @@ namespace Scaffold.Domain.Core.Commands
     {
         object ICommand.id
         {
-            get => Id;
-            set => Id = (TIdentity)value;
+            get => id;
+            set => id = (TIdentity)value;
         }
 
-        public TIdentity Id { get; private set; }
+        public TIdentity id { get; private set; }
         public Expression<Func<TEntity, bool>> Filter { get; }
-        protected Command(TIdentity id, Expression<Func<TEntity, bool>> filter = null)
+        protected Command(TIdentity Id, Expression<Func<TEntity, bool>> filter = null)
         {
-            Id = id;
+            id = Id;
             Filter = filter;
         }
         

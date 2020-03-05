@@ -1,9 +1,6 @@
-using System;
-using System.Linq;
 using Microsoft.AspNetCore.Mvc;
-using Scaffold.Application.AppServices;
-using Scaffold.Domain.Models.Cart;
-using Scaffold.Domain.Models.Cart.Commands;
+using Scaffold.Application.Services;
+using Scaffold.Domain.Models.CartModel;
 
 namespace Scaffold.Presentation.Api.Controllers
 {
@@ -19,34 +16,40 @@ namespace Scaffold.Presentation.Api.Controllers
             _cartService = cartService;
         }
 
+        [HttpGet]
+        public IActionResult Get([FromRoute]string id, [FromQuery]string customerId)
+        {
+            if (id == null && customerId == null)
+                return _cartService.GetAll();
+
+            if (id == null)
+                return _cartService.GetByCustomerId(customerId);
+            else
+                return _cartService.GetById(id);
+        }
+
         [HttpPost("")]
-        public IActionResult CartPost([FromBody]Cart cart)
+        public IActionResult Post([FromBody]Cart cart)
         {
             return _cartService.Create(cart);
         }
 
+        [HttpPatch]
+        [Route("{id}/items")]
+        public IActionResult Patch([FromRoute]string id, [FromBody]CartEditItem item)
+        {
+            return _cartService.Update(id, item);
+        }
+
         [HttpDelete("{id}")]
-        public IActionResult CartDelete(Guid id)
+        public IActionResult Delete(string id)
         {
             return _cartService.Delete(id);
         }
 
-        //[HttpPatch]
-        //[Route("{id}/items")]
-        //public IActionResult CartPatch([FromRoute]string id, [FromBody]ChangeCartItemCommand patchCommand)
-        //{
-        //    if (string.IsNullOrWhiteSpace(id)) return BadRequest();
-
-        //    if (patchCommand == null) return BadRequest();
-
-        //    patchCommand.CartId = id;
-
-        //    return Ok(new CreateCartCommandResponse());
-        //}
-
         //[HttpPost]
         //[Route("{id}/checkout")]
-        //public IActionResult CheckoutPost([FromRoute]string id, [FromBody]CheckoutCommand checkoutCommand)
+        //public IActionResult Checkout([FromRoute]string id, [FromBody]CheckoutCommand checkoutCommand)
         //{
         //    var teamControlId = Request.Headers["x-team-control"].FirstOrDefault();            
 
@@ -61,6 +64,5 @@ namespace Scaffold.Presentation.Api.Controllers
 
         //    return Ok();
         //}
-
     }
 }

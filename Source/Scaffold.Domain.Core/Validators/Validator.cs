@@ -1,5 +1,6 @@
 using FluentValidation;
 using Scaffold.Domain.Core.Commands;
+using System;
 
 namespace Scaffold.Domain.Core.Validators
 {
@@ -11,9 +12,14 @@ namespace Scaffold.Domain.Core.Validators
             ValidatorOptions.CascadeMode = CascadeMode.StopOnFirstFailure;
         }
 
-        public void ValidateId()
+        //public void ValidateId()
+        //{
+        //    RuleFor(c => c.id).NotEmpty();
+        //}
+
+        protected bool ValidateGuid(Guid guid)
         {
-            RuleFor(c => c.id).NotEmpty();
+            return Guid.TryParse(guid.ToString(), out var result);
         }
     }
 }

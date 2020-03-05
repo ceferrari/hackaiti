@@ -5,7 +5,9 @@ using System.Threading.Tasks;
 using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.DocumentModel;
 using Amazon.DynamoDBv2.Model;
-using Scaffold.Domain.Models.Cart;
+using Newtonsoft.Json;
+using Scaffold.Domain.Models.CartModel;
+using Scaffold.Domain.Models.CartModel.Repositories;
 
 namespace Scaffold.Infra.Repositories
 {
@@ -18,47 +20,97 @@ namespace Scaffold.Infra.Repositories
             this.dbClient = dbClient;
         }
 
-        public async Task AddCart(Cart cart)
+        public bool ExistsById(string id)
         {
-            var table = Table.LoadTable(dbClient, "cart_sku");
-            Document document = DocumentFromCart(cart);
+            var table = Table.LoadTable(dbClient, "carts_id_cid");
 
-            await table.PutItemAsync(document);
-        }
-
-        private static Document DocumentFromCart(Cart cart)
-        {
-            var document = new Document();
-
-            //document["sku"] = cart.sku;
-            //document["id"] = cart.id;
-            //document["name"] = cart.name;
-            //document["shortDescription"] = cart.shortDescription;
-            //document["longDescription"] = cart.longDescription;
-            //document["imageUrl"] = cart.imageUrl;
-            //document["price.amount"] = cart.price.amount;
-            //document["price.currencyCode"] = cart.price.currencyCode;
-            //document["price.scale"] = cart.price.scale;
-
-            return document;
-        }
-
-        public bool AlreadyExists(string sku)
-        {
-            var table = Table.LoadTable(dbClient, "carts_sku");
-
-            return table.Query(new QueryFilter("sku", QueryOperator.Equal, new List<AttributeValue>()
+            return table.Query(new QueryFilter("id", QueryOperator.Equal, new List<AttributeValue>()
             {
                 new AttributeValue()
                 {
-                    S = sku
+                    S = id
                 }
             })).Count > 0;
         }
 
-        public async Task<IEnumerable<Cart>> GetAllCarts()
+        public bool ExistsByCustomerId(string customerId)
         {
-            var table = Table.LoadTable(dbClient, "carts_sku");
+            var table = Table.LoadTable(dbClient, "carts_id_cid");
+
+            return table.Query(new QueryFilter("customerId", QueryOperator.Equal, new List<AttributeValue>()
+            {
+                new AttributeValue()
+                {
+                    S = customerId
+                }
+            })).Count > 0;
+        }
+
+        public async Task<Cart> GetById(string id)
+        {
+            var table = Table.LoadTable(dbClient, "carts_id_cid");
+
+            var filter = new QueryFilter();
+            filter.AddCondition("id", QueryOperator.Equal, id);
+
+            var queryConfig = new QueryOperationConfig
+            {
+                Filter = filter,
+                Limit = 1
+            };
+
+            var result = table.Query(queryConfig);
+
+            if (result.IsDone)
+            {
+                throw new ArgumentException("id");
+            }
+            else
+            {
+                var querySet = await result.GetNextSetAsync();
+
+                var document = querySet.First();
+
+                Cart cart = CartFromDocument(document);
+
+                return cart;
+            }
+        }
+
+        public async Task<Cart> GetByCustomerId(string customerId)
+        {
+            var table = Table.LoadTable(dbClient, "carts_id_cid");
+
+            var filter = new QueryFilter();
+            filter.AddCondition("customerId", QueryOperator.Equal, customerId);
+
+            var queryConfig = new QueryOperationConfig
+            {
+                Filter = filter,
+                Limit = 1
+            };
+
+            var result = table.Query(queryConfig);
+
+            if (result.IsDone)
+            {
+                throw new ArgumentException("customerId");
+            }
+            else
+            {
+                var querySet = await result.GetNextSetAsync();
+
+                var document = querySet.First();
+
+                Cart cart = CartFromDocument(document);
+
+                return cart;
+            }
+        }
+
+        public async Task<IEnumerable<Cart>> GetAll()
+        {
+            var table = Table.LoadTable(dbClient, "carts_id_cid");
 
             var scanFilter = new ScanFilter();
 
@@ -85,12 +137,20 @@ namespace Scaffold.Infra.Repositories
             return carts;
         }
 
-        public async Task<Cart> GetCart(string sku)
+        public async Task Add(Cart cart)
         {
-            var table = Table.LoadTable(dbClient, "carts_sku");
+            var table = Table.LoadTable(dbClient, "carts_id_cid");
+            Document document = DocumentFromCart(cart);
+
+            await table.PutItemAsync(document);
+        }
+
+        public async Task Delete(string id)
+        {
+            var table = Table.LoadTable(dbClient, "carts_id_cid");
 
             var filter = new QueryFilter();
-            filter.AddCondition("sku", QueryOperator.Equal, sku);
+            filter.AddCondition("id", QueryOperator.Equal, id);
 
             var queryConfig = new QueryOperationConfig
             {
@@ -102,7 +162,7 @@ namespace Scaffold.Infra.Repositories
 
             if (result.IsDone)
             {
-                throw new ArgumentException("sku");
+                throw new ArgumentException("id");
             }
             else
             {
@@ -110,26 +170,32 @@ namespace Scaffold.Infra.Repositories
 
                 var document = querySet.First();
 
-                Cart cart = CartFromDocument(document);
+                document["status"] = "CANCEL";
 
-                return cart;
+                await table.PutItemAsync(document);
             }
+        }
+
+        private static Document DocumentFromCart(Cart cart)
+        {
+            var document = new Document();
+
+            document["id"] = cart.id;
+            document["customerId"] = cart.customerId;
+            document["status"] = cart.status;
+            document["items"] = JsonConvert.SerializeObject(cart.items);
+
+            return document;
         }
 
         private static Cart CartFromDocument(Document document)
         {
             var cart = new Cart();
 
-            //product.sku = document["sku"].AsString();
-            //product.id = document["id"].AsGuid();
-            //product.name = document["name"].AsString();
-            //product.shortDescription = document["shortDescription"].AsString();
-            //product.longDescription = document["longDescription"].AsString();
-            //product.imageUrl = document["imageUrl"].AsString();
-            //product.price = new ProductPrice();
-            //product.price.amount = document["price.amount"].AsLong();
-            //product.price.currencyCode = document["price.currencyCode"].AsString();
-            //product.price.scale = document["price.scale"].AsLong();
+            cart.id = document["id"].AsGuid();
+            cart.customerId = document["customerId"].AsString();
+            cart.status = document["status"].AsString();
+            cart.items = JsonConvert.DeserializeObject<List<CartItem>>(document["items"].AsString());
 
             return cart;
         }

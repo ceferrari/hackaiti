@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Scaffold.Application.AppServices;
-using Scaffold.Domain.Models.Product;
+using Scaffold.Application.Services;
+using Scaffold.Domain.Models.ProductModel;
 
 namespace Scaffold.Presentation.Api.Controllers
 {
@@ -17,9 +17,15 @@ namespace Scaffold.Presentation.Api.Controllers
         }
 
         [HttpGet]
-        public IActionResult Get([FromRoute]string id)
+        public IActionResult Get([FromRoute]string id, [FromQuery]string sku)
         {
-            return _productService.Get(id);
+            if (id == null && sku == null) 
+                return _productService.GetAll();
+
+            if (id == null) 
+                return _productService.GetBySku(sku);
+            else
+                return _productService.GetById(id);
         }
 
         [HttpPost]

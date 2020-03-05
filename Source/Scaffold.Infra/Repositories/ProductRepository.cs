@@ -5,7 +5,8 @@ using System.Threading.Tasks;
 using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.DocumentModel;
 using Amazon.DynamoDBv2.Model;
-using Scaffold.Domain.Models.Product;
+using Scaffold.Domain.Models.ProductModel;
+using Scaffold.Domain.Models.ProductModel.Repositories;
 
 namespace Scaffold.Infra.Repositories
 {
@@ -18,34 +19,22 @@ namespace Scaffold.Infra.Repositories
             this.dbClient = dbClient;
         }
 
-        public async Task AddProduct(Product product)
+        public bool ExistsById(string id)
         {
-            var table = Table.LoadTable(dbClient, "products_sku");
-            Document document = DocumentFromProduct(product);
+            var table = Table.LoadTable(dbClient, "products_id_sku");
 
-            await table.PutItemAsync(document);
+            return table.Query(new QueryFilter("id", QueryOperator.Equal, new List<AttributeValue>()
+            {
+                new AttributeValue()
+                {
+                    S = id
+                }
+            })).Count > 0;
         }
 
-        private static Document DocumentFromProduct(Product product)
+        public bool ExistsBySku(string sku)
         {
-            var document = new Document();
-
-            document["sku"] = product.sku;
-            document["id"] = product.id;
-            document["name"] = product.name;
-            document["shortDescription"] = product.shortDescription;
-            document["longDescription"] = product.longDescription;
-            document["imageUrl"] = product.imageUrl;
-            document["price.amount"] = product.price.amount;
-            document["price.currencyCode"] = product.price.currencyCode;
-            document["price.scale"] = product.price.scale;
-
-            return document;
-        }
-
-        public bool AlreadyExists(string sku)
-        {
-            var table = Table.LoadTable(dbClient, "products_sku");
+            var table = Table.LoadTable(dbClient, "products_id_sku");
 
             return table.Query(new QueryFilter("sku", QueryOperator.Equal, new List<AttributeValue>()
             {
@@ -56,38 +45,40 @@ namespace Scaffold.Infra.Repositories
             })).Count > 0;
         }
 
-        public async Task<IEnumerable<Product>> GetAllProducts()
+        public async Task<Product> GetById(string id)
         {
-            var table = Table.LoadTable(dbClient, "products_sku");
+            var table = Table.LoadTable(dbClient, "products_id_sku");
 
-            var scanFilter = new ScanFilter();
+            var filter = new QueryFilter();
+            filter.AddCondition("id", QueryOperator.Equal, id);
 
-            var scanOperation = new ScanOperationConfig()
+            var queryConfig = new QueryOperationConfig
             {
-                Filter = scanFilter
+                Filter = filter,
+                Limit = 1
             };
 
-            var result = table.Scan(scanOperation);
+            var result = table.Query(queryConfig);
 
-            var products = new List<Product>();
-
-            while (!result.IsDone)
+            if (result.IsDone)
+            {
+                throw new ArgumentException("sku");
+            }
+            else
             {
                 var querySet = await result.GetNextSetAsync();
 
-                foreach (var document in querySet)
-                {
-                    Product product = ProductFromDocument(document);
-                    products.Add(product);
-                }
-            }
+                var document = querySet.First();
 
-            return products;
+                Product product = ProductFromDocument(document);
+
+                return product;
+            }
         }
 
-        public async Task<Product> GetProduct(string sku)
+        public async Task<Product> GetBySku(string sku)
         {
-            var table = Table.LoadTable(dbClient, "products_sku");
+            var table = Table.LoadTable(dbClient, "products_id_sku");
 
             var filter = new QueryFilter();
             filter.AddCondition("sku", QueryOperator.Equal, sku);
@@ -114,6 +105,60 @@ namespace Scaffold.Infra.Repositories
 
                 return product;
             }
+        }
+
+        public async Task<IEnumerable<Product>> GetAll()
+        {
+            var table = Table.LoadTable(dbClient, "products_id_sku");
+
+            var scanFilter = new ScanFilter();
+
+            var scanOperation = new ScanOperationConfig()
+            {
+                Filter = scanFilter
+            };
+
+            var result = table.Scan(scanOperation);
+
+            var products = new List<Product>();
+
+            while (!result.IsDone)
+            {
+                var querySet = await result.GetNextSetAsync();
+
+                foreach (var document in querySet)
+                {
+                    Product product = ProductFromDocument(document);
+                    products.Add(product);
+                }
+            }
+
+            return products;
+        }
+
+        public async Task Add(Product product)
+        {
+            var table = Table.LoadTable(dbClient, "products_id_sku");
+            Document document = DocumentFromProduct(product);
+
+            await table.PutItemAsync(document);
+        }
+
+        private static Document DocumentFromProduct(Product product)
+        {
+            var document = new Document();
+
+            document["sku"] = product.sku;
+            document["id"] = product.id;
+            document["name"] = product.name;
+            document["shortDescription"] = product.shortDescription;
+            document["longDescription"] = product.longDescription;
+            document["imageUrl"] = product.imageUrl;
+            document["price.amount"] = product.price.amount;
+            document["price.currencyCode"] = product.price.currencyCode;
+            document["price.scale"] = product.price.scale;
+
+            return document;
         }
 
         private static Product ProductFromDocument(Document document)

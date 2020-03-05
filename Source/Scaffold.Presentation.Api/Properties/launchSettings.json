@@ -3,8 +3,8 @@
     "anonymousAuthentication": true,
     "windowsAuthentication": false,
     "iisExpress": {
-      "applicationUrl": "http://localhost:5000",
-      "sslPort": 5001
+      "applicationUrl": "http://localhost:6000",
+      "sslPort": 6001
     }
   },
   "$schema": "http://json.schemastore.org/launchsettings.json",
@@ -30,7 +30,7 @@
       "commandName": "Docker",
       "launchBrowser": true,
       "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}",
-      "publishAllPorts": true,
+      "publishAllPorts": false,
       "useSSL": true
     }
   }
